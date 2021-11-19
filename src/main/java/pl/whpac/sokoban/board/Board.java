@@ -13,7 +13,28 @@ public class Board {
         this.width = width;
         this.height = height;
 
-        this.fields = new Field[width * height];
-        this.entities = new Entity[width * height];
+        // Initialize arrays for board contents
+        fields = new Field[width * height];
+        entities = new Entity[width * height];
+
+        entities[0] = new Player();
+        entities[9] = new Player();
+    }
+
+    // Converts the (x, y) coordinates to offset used in arrays
+    private int convertXYtoOffset(int x, int y) {
+        return y * height + x;
+    }
+
+    // Returns the field at the specified coordinates
+    public Field getFieldAt(int x, int y) {
+        int offset = convertXYtoOffset(x, y);
+        return fields[offset];
+    }
+
+    // Returns the entity at the specified coordinates
+    public Entity getEntityAt(int x, int y) {
+        int offset = convertXYtoOffset(x, y);
+        return entities[offset];
     }
 }
