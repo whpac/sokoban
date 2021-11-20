@@ -11,7 +11,8 @@ public class Sokoban extends Application {
         Board board = new Board(4, 4);
 
         BoardDisplay display = new BoardDisplay(stage);
-        display.display(board);
+        display.setBoard(board);
+        display.start();
     }
 
     public static void main(String[] args) {
