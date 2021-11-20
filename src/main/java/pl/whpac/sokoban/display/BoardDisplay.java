@@ -38,14 +38,14 @@ public class BoardDisplay {
         stage.show();
 
         currentlyActiveKeys = new HashSet<>();
-        scene.setOnKeyPressed(event -> currentlyActiveKeys.add(event.getCode().toString()));
-        scene.setOnKeyReleased(event -> currentlyActiveKeys.remove(event.getCode().toString()));
+        scene.setOnKeyPressed(event -> processKeyDown(event.getCode().toString()));
+        scene.setOnKeyReleased(event -> processKeyUp(event.getCode().toString()));
 
         timer = new AnimationTimer()
         {
             public void handle(long currentNanoTime)
             {
-                tick(currentNanoTime);
+                tick();
             }
         };
     }
@@ -58,7 +58,7 @@ public class BoardDisplay {
         timer.start();
     }
 
-    private void tick(long currentNanoTime){
+    private void tick(){
         // processUserInput()
         // hasBoardChanged()
         render();
@@ -83,5 +83,15 @@ public class BoardDisplay {
                 if(p != null) p.paint(gc, size*x, size*y, size);
             }
         }
+    }
+
+    private void processKeyDown(String keycode){
+        currentlyActiveKeys.add(keycode);
+        board.dispatchEvent(null);
+    }
+
+    private void processKeyUp(String keycode){
+        currentlyActiveKeys.remove(keycode);
+        board.dispatchEvent(null);
     }
 }

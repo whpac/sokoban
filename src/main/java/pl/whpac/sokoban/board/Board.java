@@ -1,5 +1,7 @@
 package pl.whpac.sokoban.board;
 
+import pl.whpac.sokoban.input.Event;
+
 public class Board {
     public final int width;
     public final int height;
@@ -41,5 +43,13 @@ public class Board {
     public Entity getEntityAt(int x, int y) {
         int offset = convertXYtoOffset(x, y);
         return entities[offset];
+    }
+
+    public void dispatchEvent(Event event){
+        for(int i = 0; i < width * height; i++){
+            fields[i].handleEvent(event);
+            if(entities[i] == null) continue;
+            entities[i].handleEvent(event);
+        }
     }
 }
