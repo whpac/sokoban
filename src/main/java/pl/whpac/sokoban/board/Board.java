@@ -17,8 +17,13 @@ public class Board {
         fields = new Field[width * height];
         entities = new Entity[width * height];
 
+        // Initialize board with empty fields
+        for(int i = 0; i < width * height; i++) fields[i] = new EmptyField();
+
         entities[0] = new Player();
-        entities[9] = new Player();
+        entities[1] = new Box();
+        fields[2] = new TargetField();
+        fields[3] = new Wall();
     }
 
     // Converts the (x, y) coordinates to offset used in arrays
