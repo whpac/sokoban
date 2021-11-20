@@ -45,6 +45,7 @@ public class Board {
         return entities[offset];
     }
 
+    // Dispatches event to all the fields and entities
     public void dispatchEvent(Event event){
         for(int i = 0; i < width * height; i++){
             fields[i].handleEvent(event);
