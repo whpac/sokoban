@@ -5,10 +5,14 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import pl.whpac.sokoban.board.Board;
 import pl.whpac.sokoban.board.Entity;
 import pl.whpac.sokoban.board.Field;
+import pl.whpac.sokoban.input.Event;
+import pl.whpac.sokoban.input.KeyboardEvent;
 
 import java.util.HashSet;
 
@@ -68,7 +72,6 @@ public class BoardDisplay {
         gc.clearRect(0, 0, canvasWidth, canvasHeight);
 
         int size = 50;
-        if(currentlyActiveKeys.contains("UP")) size = 60;
 
         Painter p;
         for(int x = 0; x < board.width; x++){
@@ -83,15 +86,22 @@ public class BoardDisplay {
                 if(p != null) p.paint(gc, size*x, size*y, size);
             }
         }
+
+        String remaining = Integer.toString(board.getRemainingBoxes());
+        gc.setFill(Color.BLACK);
+        gc.setFont(Font.font("Arial", 20));
+        gc.fillText(remaining, 250, 100);
     }
 
     private void processKeyDown(String keycode){
         currentlyActiveKeys.add(keycode);
-        board.dispatchEvent(null);
+        Event e = new KeyboardEvent(keycode, KeyboardEvent.KeyboardEventType.keyDown);
+        board.dispatchEvent(e);
     }
 
     private void processKeyUp(String keycode){
         currentlyActiveKeys.remove(keycode);
-        board.dispatchEvent(null);
+        Event e = new KeyboardEvent(keycode, KeyboardEvent.KeyboardEventType.keyUp);
+        board.dispatchEvent(e);
     }
 }
