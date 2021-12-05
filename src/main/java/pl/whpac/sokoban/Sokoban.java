@@ -4,14 +4,24 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import pl.whpac.sokoban.board.Board;
 import pl.whpac.sokoban.board.BoardBuilder;
-import pl.whpac.sokoban.board.MockBoardBuilder;
+import pl.whpac.sokoban.board.FileBoardBuilder;
 import pl.whpac.sokoban.display.BoardDisplay;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Sokoban extends Application {
     @Override
     public void start(Stage stage) {
-        BoardBuilder board_builder = new MockBoardBuilder();
-        Board board = board_builder.createBoard();
+        Board board;
+        try{
+            InputStream input_stream = getClass().getResourceAsStream("board/lvl1.txt");
+            BoardBuilder board_builder = new FileBoardBuilder(input_stream);
+            board = board_builder.createBoard();
+        }catch(IOException e){
+            System.out.println("Cannot load board.");
+            return;
+        }
 
         BoardDisplay display = new BoardDisplay(stage);
         display.setBoard(board);
