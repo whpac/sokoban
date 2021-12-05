@@ -5,8 +5,8 @@ import pl.whpac.sokoban.input.KeyboardEvent;
 
 public class Player extends Entity {
 
-    public Player(Board board, int pos_x, int pos_y) {
-        super(board, pos_x, pos_y);
+    public Player(Board board) {
+        super(board);
     }
 
     public void handleEvent(Event event) {

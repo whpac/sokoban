@@ -23,11 +23,6 @@ public class Board {
 
         // Initialize board with empty fields
         for(int i = 0; i < width * height; i++) fields[i] = new EmptyField();
-
-        entities[0] = new Player(this, 0, 0);
-        entities[1] = new Box(this, 1, 0);
-        fields[2] = new TargetField();
-        fields[6] = new Wall();
     }
 
     // Converts the (x, y) coordinates to offset used in arrays
@@ -47,6 +42,13 @@ public class Board {
         return fields[offset];
     }
 
+    // Sets a field at the given position
+    public void setFieldAt(Field f, int x, int y){
+        if(outOfBounds(x, y)) return;
+        int offset = convertXYtoOffset(x, y);
+        fields[offset] = f;
+    }
+
     // Returns the entity at the specified coordinates
     public Entity getEntityAt(int x, int y) {
         if(outOfBounds(x, y)) return null;
@@ -59,6 +61,7 @@ public class Board {
         if(outOfBounds(x, y)) return;
         int offset = convertXYtoOffset(x, y);
         entities[offset] = e;
+        if(e != null) e.setPosition(x, y);
     }
 
     // Moves the specified entity to the target position
@@ -83,7 +86,6 @@ public class Board {
 
         setEntityAt(null, src_x, src_y);
         setEntityAt(e, target_x, target_y);
-        e.setPosition(target_x, target_y);
         return true;
     }
 

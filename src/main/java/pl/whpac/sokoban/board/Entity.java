@@ -7,10 +7,8 @@ public abstract class Entity {
     private int posX;
     private int posY;
 
-    public Entity(Board board, int pos_x, int pos_y){
+    public Entity(Board board){
         this.board = board;
-        this.posX = pos_x;
-        this.posY = pos_y;
     }
 
     public final int getPosX(){

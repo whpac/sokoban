@@ -2,8 +2,8 @@ package pl.whpac.sokoban.board;
 
 public class Box extends Entity{
 
-    public Box(Board board, int pos_x, int pos_y) {
-        super(board, pos_x, pos_y);
+    public Box(Board board) {
+        super(board);
     }
 
     @Override
