@@ -37,7 +37,7 @@ public class Board {
 
     // Returns the field at the specified coordinates
     public Field getFieldAt(int x, int y) {
-        if(outOfBounds(x, y)) return null;
+        if(outOfBounds(x, y)) return new Wall();
         int offset = convertXYtoOffset(x, y);
         return fields[offset];
     }
