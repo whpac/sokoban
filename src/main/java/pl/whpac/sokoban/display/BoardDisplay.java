@@ -14,6 +14,7 @@ import pl.whpac.sokoban.board.Field;
 import pl.whpac.sokoban.input.Event;
 import pl.whpac.sokoban.input.KeyboardEvent;
 
+import java.io.IOException;
 import java.util.HashSet;
 
 public class BoardDisplay {
@@ -64,24 +65,29 @@ public class BoardDisplay {
     private void render() {
         gc.clearRect(0, 0, canvasWidth, canvasHeight);
 
-        int size = 50;
+        int size = 64;
         // Board X and Y coordinates relative to the window
         // so that the board is centered
         int bx = (canvasWidth - board.width * size) / 2;
         int by = (canvasHeight - board.height * size) / 2;
 
-        Painter p;
-        for(int x = 0; x < board.width; x++){
-            for(int y = 0; y < board.height; y++){
-                Field f = board.getFieldAt(x, y);
-                Entity e = board.getEntityAt(x, y);
+        try {
+            Painter p;
+            for (int x = 0; x < board.width; x++) {
+                for (int y = 0; y < board.height; y++) {
+                    Field f = board.getFieldAt(x, y);
+                    Entity e = board.getEntityAt(x, y);
 
-                p = PainterFactory.getFieldPainter(f);
-                if(p != null) p.paint(gc, bx + size*x, by + size*y, size);
+                    p = PainterFactory.getFieldPainter(f);
+                    if (p != null) p.paint(gc, bx + size * x, by + size * y, size);
 
-                p = PainterFactory.getEntityPainter(e);
-                if(p != null) p.paint(gc, bx + size*x, by + size*y, size);
+                    if(e == null) continue;
+                    p = PainterFactory.getEntityPainter(e);
+                    if (p != null) p.paint(gc, bx + size * x, by + size * y, size);
+                }
             }
+        }catch(IOException e){
+            System.out.println("Error " + e);
         }
 
         String remaining = Integer.toString(board.getRemainingBoxes());
