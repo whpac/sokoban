@@ -27,7 +27,7 @@ public class Board {
 
     // Converts the (x, y) coordinates to offset used in arrays
     private int convertXYtoOffset(int x, int y) {
-        return y * height + x;
+        return y * width + x;
     }
 
     // Checks whether the specified coordinates are outside board
