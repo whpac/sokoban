@@ -21,13 +21,13 @@ public class BoardDisplay {
     private final int canvasHeight;
 
     private final GraphicsContext gc;
-    private final HashSet<String> currentlyActiveKeys;
     private final AnimationTimer timer;
     private Board board;
 
     public BoardDisplay(Stage stage) {
-        canvasWidth = 400;
-        canvasHeight = 200;
+        stage.setResizable(false);
+        canvasWidth = 600;
+        canvasHeight = 450;
 
         Group root = new Group();
         Scene scene = new Scene(root);
@@ -41,7 +41,6 @@ public class BoardDisplay {
         stage.setTitle("Sokoban");
         stage.show();
 
-        currentlyActiveKeys = new HashSet<>();
         scene.setOnKeyPressed(event -> processKeyDown(event.getCode().toString()));
         scene.setOnKeyReleased(event -> processKeyUp(event.getCode().toString()));
 
@@ -49,7 +48,7 @@ public class BoardDisplay {
         {
             public void handle(long currentNanoTime)
             {
-                tick();
+                render();
             }
         };
     }
@@ -62,16 +61,14 @@ public class BoardDisplay {
         timer.start();
     }
 
-    private void tick(){
-        // processUserInput()
-        // hasBoardChanged()
-        render();
-    }
-
     private void render() {
         gc.clearRect(0, 0, canvasWidth, canvasHeight);
 
         int size = 50;
+        // Board X and Y coordinates relative to the window
+        // so that the board is centered
+        int bx = (canvasWidth - board.width * size) / 2;
+        int by = (canvasHeight - board.height * size) / 2;
 
         Painter p;
         for(int x = 0; x < board.width; x++){
@@ -80,27 +77,25 @@ public class BoardDisplay {
                 Entity e = board.getEntityAt(x, y);
 
                 p = PainterFactory.getFieldPainter(f);
-                if(p != null) p.paint(gc, size*x, size*y, size);
+                if(p != null) p.paint(gc, bx + size*x, by + size*y, size);
 
                 p = PainterFactory.getEntityPainter(e);
-                if(p != null) p.paint(gc, size*x, size*y, size);
+                if(p != null) p.paint(gc, bx + size*x, by + size*y, size);
             }
         }
 
         String remaining = Integer.toString(board.getRemainingBoxes());
         gc.setFill(Color.BLACK);
         gc.setFont(Font.font("Arial", 20));
-        gc.fillText(remaining, 250, 100);
+        gc.fillText(remaining, bx + 250, by + 100);
     }
 
     private void processKeyDown(String keycode){
-        currentlyActiveKeys.add(keycode);
         Event e = new KeyboardEvent(keycode, KeyboardEvent.KeyboardEventType.keyDown);
         board.dispatchEvent(e);
     }
 
     private void processKeyUp(String keycode){
-        currentlyActiveKeys.remove(keycode);
         Event e = new KeyboardEvent(keycode, KeyboardEvent.KeyboardEventType.keyUp);
         board.dispatchEvent(e);
     }
